@@ -1,0 +1,36 @@
+{
+  "name": "decision-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch --env-file .env src/server.ts",
+    "start": "node build/server.js",
+    "build": "tsup --env-file .env src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lezisilva163/decision-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lezisilva163/decision-backend/issues"
+  },
+  "homepage": "https://github.com/lezisilva163/decision-backend#readme",
+  "devDependencies": {
+    "@types/bcryptjs": "2.4.6",
+    "@types/node": "20.14.2",
+    "prisma": "5.15.0",
+    "tsup": "8.1.0",
+    "tsx": "4.15.2",
+    "typescript": "5.4.5"
+  },
+  "dependencies": {
+    "@prisma/client": "5.15.0",
+    "bcryptjs": "2.4.3",
+    "fastify": "4.27.0",
+    "zod": "3.23.8"
+  }
+}
