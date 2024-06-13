@@ -1,49 +1,45 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { hash } from "bcryptjs";
-import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { RegisterService } from "@/services/register-service";
+import { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository";
 
 export async function registerController(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
-  const registerBodySchema = z.object({
-    name: z.string().min(10).max(100),
-    birth_date: z.preprocess(
-      (arg) => {
-        if (typeof arg === "string" || arg instanceof Date) {
-          return new Date(arg);
-        }
-      },
-      z.date().refine(
-        (date) => {
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-          return date <= today;
-        },
-        {
-          message: "birth_date must not be in the future",
-        }
-      )
-    ),
-    mother_name: z.string().min(10).max(100),
-    password: z.string().min(10).max(30),
-  });
+  try {
+    const registerBodySchema = z.object({
+      name: z.string().min(10).max(100),
+      birth_date: z.string(),
+      mother_name: z.string().min(10).max(100),
+      password: z.string().min(10).max(30),
+    });
 
-  const { name, birth_date, mother_name, password } = registerBodySchema.parse(
-    request.body
-  );
+    const parsedBody = registerBodySchema.safeParse(request.body);
 
-  const passwordHash = await hash(password, 6);
+    if (!parsedBody.success) {
+      throw new Error("Invalid request body");
+    }
 
-  await prisma.user.create({
-    data: {
+    const { name, birth_date, mother_name, password } = parsedBody.data;
+
+    const birthDateParsed = new Date(birth_date);
+    console.log(birthDateParsed);
+
+    const usersRepository = new PrismaUsersRepository();
+    const registerService = new RegisterService(usersRepository);
+
+    await registerService.execute({
       name,
-      birth_date,
+      birth_date: birthDateParsed,
       mother_name,
-      password: passwordHash,
-    },
-  });
+      password,
+    });
+  } catch (error) {
+    console.error("Error parsing request body:", error);
+    reply.status(400).send("Invalid request body");
+    return;
+  }
 
   return reply.status(201).send();
 }
