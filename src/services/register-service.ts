@@ -1,4 +1,5 @@
 import { UsersRepository } from "@/repositories/users-repository";
+import { encryptData } from "@/utils/crypto";
 import { hash } from "bcryptjs";
 
 interface RegisterServiceRequest {
@@ -17,11 +18,12 @@ export class RegisterService {
     password,
   }: RegisterServiceRequest) {
     const passwordHash = await hash(password, 6);
+    const motherNameEncrypted = encryptData(mother_name);
 
     await this.usersRepository.create({
       name,
       birth_date,
-      mother_name,
+      mother_name: motherNameEncrypted,
       password: passwordHash,
     });
   }

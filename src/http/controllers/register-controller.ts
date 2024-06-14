@@ -35,11 +35,11 @@ export async function registerController(
       mother_name,
       password,
     });
+
+    return reply.status(201).send();
   } catch (error) {
     console.error("Error parsing request body:", error);
     reply.status(400).send("Invalid request body");
     return;
   }
-
-  return reply.status(201).send();
 }
