@@ -35,7 +35,7 @@ export async function updateController(
     const response = await updateService.execute({
       id,
       name,
-      birth_date: new Date(birthDate),
+      birth_date: new Date(`${birthDate}T00:00:00`),
       mother_name,
       password,
     });

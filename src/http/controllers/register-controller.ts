@@ -23,7 +23,8 @@ export async function registerController(
 
     const { name, birth_date, mother_name, password } = parsedBody.data;
 
-    const birthDateParsed = new Date(birth_date);
+    const birthDateParsed = new Date(`${birth_date}T00:00:00`);
+    console.log(birth_date);
     console.log(birthDateParsed);
 
     const usersRepository = new PrismaUsersRepository();
