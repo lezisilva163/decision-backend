@@ -12,23 +12,29 @@ Este projeto é uma API REST construída com Node.js, Fastify e Prisma.
 
 - Para configurar e executar o projeto localmente, siga os passos abaixo:
 
-1. Clone este repositório:
+1. É necessário estar utilizando a versão mais atual do nodeJS para funcionar o dotenv nativo, caso esteja utilizando nvm:
+
+   ```bash
+   nvm install lts
+   ```
+
+2. Clone este repositório:
    ```bash
    git clone https://github.com/lezisilva163/decision-backend.git
    ```
-2. Instale as dependências:
+3. Instale as dependências:
    ```bash
    npm install
    ```
-3. Rode o comando com o docker aberto para subir o banco de dados:
+4. Rode o comando com o docker aberto para subir o banco de dados:
    ```bash
    docker compose up
    ```
-4. Rode o comando do prisma para criar a tabela de usuários:
+5. Rode o comando do prisma para criar a tabela de usuários:
    ```bash
    npm run migrate:dev
    ```
-5. Rode o projeto:
+6. Rode o projeto:
    ```bash
    npm run dev
    ```
